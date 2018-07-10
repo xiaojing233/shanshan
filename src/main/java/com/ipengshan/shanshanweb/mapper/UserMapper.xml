@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ipengshan.shanshanweb.mapper.UserMapper">
+<!-- <insert id="insertSelective" parameterType="cn.itheima.pojo.Orders" >
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert> -->
+<!--   <resultMap type="User" id="UserResultMap">  
+        <id column="user_id" property="userId"/>  
+        <result column="user_name" property="userName"/>  
+        <result column="user_pwd" property="userPwd"/>  
+</resultMap> -->  
+
+	<sql id="userlist">
+		<trim prefix="(" suffixOverrides="," suffix=")" >
+			<if test="u_username!=null and u_username.lenght>0">
+				#{userName},
+			</if>
+			<if test="u_nickname!=null and u_nickname.lenght>0">
+				#{nickName},
+			</if>
+			<if test="u_password!=null and u_password.lenght>0">
+				#{passWord},
+			</if>
+			<if test="u_description!=null and u_description.lenght>0">
+				#{description},
+			</if>
+			<if test="u_icon!=null and u_icon.lenght>0">
+				#{icon},
+			</if>
+			<if test="u_password!=null and u_mail.lenght>0">
+				#{eMail},
+			</if>
+			<if test="u_gender!=null and u_gender.lenght>0">
+				#{gender},
+			</if>
+			<if test="u_phonenum!=null and u_phonenum.lenght>0">
+				#{phoneNum},
+			</if>
+			
+		</trim>
+	</sql>
+	<!-- 邮箱/账号  登录 -->
+	<select id="matchAcount" parameterType="User"
+		resultType="com.ipengshan.shanshanweb.domain.User">
+		select * from user where (u_username=#{userName} or u_mail=#{eMail})AND u_password=#{passWord}
+	</select>
+	<!-- 该邮箱是否被使用 -->
+	<select id="findByMail" parameterType="string" resultType="int">
+		select count(*) from user where u_mail=#{eMail}
+	</select>
+	<!-- 创建账户 -->
+	<insert id="createAccount" parameterType="User"  >
+	<!-- 返回最后插入数据的主键 -->
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into user (u_mail,u_password) values (#{eMail},#{passWord})
+	</insert>
+	
+	<!-- 更新用户信息 -->
+	<update id="updateUserinfo" parameterType="User">
+			update user
+			<set>
+				<if test="u_username!=null and u_username.lenght>0">
+				u_username=#{userName},
+				</if>
+				<if test="u_nickname!=null and u_nickname.lenght>0">
+				u_nickname=#{nickName},
+				</if>
+				<if test="u_password!=null and u_password.lenght>0">
+				u_password=#{passWord},
+				</if>
+				<if test="u_description!=null and u_description.lenght>0">
+				u_description=#{description},
+				</if>
+				<if test="u_icon!=null and u_icon.lenght>0">
+				u_icon=#{icon},
+				</if>
+				<if test="u_mail!=null and u_mail.lenght>0">
+				u_username=#{userName},
+				</if>
+				<if test="u_mail!=null and u_mail.lenght>0">
+				u_gender=#{gender},
+				</if>
+				<if test="u_phonenum!=null and u_phonenum.lenght>0">
+				u_phonenum=#{phoneNum},
+				</if>
+				<if test="u_createtime!=null and u_createtime.lenght>0">
+				u_createtime=#{createTime},
+				</if>
+				<if test="u_other!=null and u_other.lenght>0">
+				u_other=#{other},
+				</if>
+				<if test="u_account_status!=null and u_account_status.lenght>0">
+				u_account_status=#{accountStatus},
+				</if>
+			</set>
+	</update>
+</mapper>

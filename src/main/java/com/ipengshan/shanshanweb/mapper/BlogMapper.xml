@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipengshan.shanshanweb.mapper.BlogMapper">
+	<resultMap type="Blog" id="BlogBean">
+		<id property="id" column="b_id"/>
+		<result property="email" column="u_mail"/>
+		<result property="content" column="b_content"/>
+		<result property="url" column="b_url"/>
+		<result property="createTime" column="b_createtime"/>
+		<result property="flag" column="b_flag" />
+	</resultMap>
+	
+
+	<select id="selectAllBlog" resultMap="BlogBean" resultType="Blog">
+	 	select * from blog
+	</select>
+	
+</mapper>

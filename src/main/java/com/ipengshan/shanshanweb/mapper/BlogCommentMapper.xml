@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipengshan.shanshanweb.mapper.BlogCommentMapper">
+	<!-- @Column(name = "bc_id")
+	private Integer id;
+	@Column(name = "b_id")
+	private Integer bId;
+	@Column(name = "bc_content")
+	private String content;
+	@Column(name = "bc_createtime")
+	private Date createTime;
+	@Column(name = "bc_type")
+	private Integer belongId;
+	@Column(name = "u_mail")
+	private String email; -->
+	<resultMap type="BlogComment" id="BlogCommentBean">
+		<id property="id" column="bc_id" />
+		<result property="bId" column="b_id" />
+		<result property="content" column="bc_content" />
+		<result property="createTime" column="bc_createtime" />
+		<result property="belongId" column="bc_type" />
+		<result property="email" column="u_mail" />
+	</resultMap>
+	<!-- 获取blog评论 -->
+	<select id="getCommentList" parameterType="java.util.List" resultMap="BlogCommentBean" resultType="BlogComment">
+		select * from blog_comment where b_id in
+		<foreach collection="list" item="blog" open="(" separator="," close=")">
+			#{blog.id}
+		</foreach>
+	</select>
+	<!-- <delete id="cancleComment" parameterMap="BlogCommentBean" parameterType="BlogComment">
+		delete from blog_comment where bc_id=#{bId}
+	</delete> -->
+</mapper>
